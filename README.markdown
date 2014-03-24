@@ -1,0 +1,3 @@
+# MagicTree
+
+Yeah. Magic.

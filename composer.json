@@ -1,0 +1,29 @@
+{
+    "name": "mathiasverraes/magictree",
+    "description": "DSL for building trees",
+    "minimum-stability": "dev",
+    "license": "MIT",
+    "homepage": "https://github.com/buttercup-php",
+    "authors": [
+        {
+            "name": "Mathias Verraes",
+            "email": "mathias@verraes.net",
+            "homepage": "http://verraes.net"
+        }
+    ],
+    "keywords": ["DSL", "tree"],
+
+    "require-dev": {
+        "phpunit/phpunit": "4.0.*"
+    },
+
+    "config": {
+        "bin-dir": "bin"
+    },
+
+    "autoload": {
+        "psr-4": {
+            "Verraes\\": ["src/Verraes", "tests/Verraes"]
+        }
+    }
+}
