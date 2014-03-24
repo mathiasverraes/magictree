@@ -10,27 +10,28 @@ final class MagicTreeTest extends PHPUnit_Framework_TestCase
     /**
      * @var Knot
      */
-    private $report;
+    private $tree;
 
     protected function setUp()
     {
-        $this->report = new Knot();
+        $this->tree = new Knot();
 
-        $this->report
-            ->subjects['wiskunde']
-                ->conclusions->domains['breuken']
-                    ->clusteredLearningGoals['cluster15']
-                        ->conclusion('ik concludeer dit')
-                        ->desciption('beschrijving');
-        $this->report
-            ->subjects['wiskunde']
-                ->conclusions->domains['getallen']
-                    ->clusteredLearningGoals['cluster15']
-                        ->conclusion('nikske')
-                        ->desciption('beschrijving');
-        $this->report
-            ->subjects['nederlands']
-                ->conclusions->domains['lezen'] = 'boeken';
+        $this->tree
+            ->colors['red']
+                ->mars->species['vertebrae']
+                    ->intelligent['1850-1899']
+                        ->discovered('on a sunday')
+                        ->description('quite likeable');
+        $this->tree
+            ->colors['red']
+                ->mars->species['fishlike']
+                    ->intelligent['1850-1899']
+                        ->discovered('by accident')
+                        ->description('a bit smelly');
+        $this->tree
+            ->colors['blue']
+                ->pluto->species['insects'] = 'gasfly';
+
 
 
     }
@@ -42,28 +43,27 @@ final class MagicTreeTest extends PHPUnit_Framework_TestCase
     public function it_should_render_to_ascii()
     {
         $expected = <<<TREE
-- subjects
-  |- wiskunde
-  |  |- conclusions
-  |  |  |- domains
-  |  |  |  |- breuken
-  |  |  |  |  |- clusteredLearningGoals
-  |  |  |  |  |  |- cluster15
-  |  |  |  |  |  |  |- conclusion: "ik concludeer dit"
-  |  |  |  |  |  |  |- desciption: "beschrijving"
-  |  |  |  |- getallen
-  |  |  |  |  |- clusteredLearningGoals
-  |  |  |  |  |  |- cluster15
-  |  |  |  |  |  |  |- conclusion: "nikske"
-  |  |  |  |  |  |  |- desciption: "beschrijving"
-  |- nederlands
-  |  |- conclusions
-  |  |  |- domains
-  |  |  |  |- lezen: "boeken"
+- colors
+  |- red
+  |  |- mars
+  |  |  |- species
+  |  |  |  |- vertebrae
+  |  |  |  |  |- intelligent
+  |  |  |  |  |  |- 1850-1899
+  |  |  |  |  |  |  |- discovered: "on a sunday"
+  |  |  |  |  |  |  |- description: "quite likeable"
+  |  |  |  |- fishlike
+  |  |  |  |  |- intelligent
+  |  |  |  |  |  |- 1850-1899
+  |  |  |  |  |  |  |- discovered: "by accident"
+  |  |  |  |  |  |  |- description: "a bit smelly"
+  |- blue
+  |  |- pluto
+  |  |  |- species
+  |  |  |  |- insects: "gasfly"
 
 TREE;
-
-        $this->assertEquals($expected, $this->report->toAscii());
+        $this->assertEquals($expected, $this->tree->toAscii());
     }
 
     /**
@@ -72,40 +72,40 @@ TREE;
     public function it_should_serialize_to_json()
     {
         $expected = <<<JSON
-{"subjects": {
-    "wiskunde": {
-        "conclusions": {
-            "domains": {
-                "breuken": {
-                    "clusteredLearningGoals": {
-                        "cluster15": {
-                            "conclusion": "ik concludeer dit",
-                            "desciption": "beschrijving"
+{"colors": {
+    "red": {
+        "mars": {
+            "species": {
+                "vertebrae": {
+                    "intelligent": {
+                        "1850-1899": {
+                            "discovered": "on a sunday",
+                            "description": "quite likeable"
                         }
                     }
                 },
-                "getallen": {
-                    "clusteredLearningGoals": {
-                        "cluster15": {
-                            "conclusion": "nikske",
-                            "desciption": "beschrijving"
+                "fishlike": {
+                    "intelligent": {
+                        "1850-1899": {
+                            "discovered": "by accident",
+                            "description": "a bit smelly"
                         }
                     }
                 }
             }
         }
     },
-    "nederlands": {
-        "conclusions": {
-            "domains": {
-                "lezen": "boeken"
+    "blue": {
+        "pluto": {
+            "species": {
+                "insects": "gasfly"
             }
         }
     }
 }}
 JSON;
 
-        $this->assertJsonStringEqualsJsonString($expected, json_encode($this->report));
+        $this->assertJsonStringEqualsJsonString($expected, json_encode($this->tree));
     }
 
     /**
@@ -114,39 +114,39 @@ JSON;
     public function it_should_cast_to_array()
     {
         $expected = [
-            'subjects' => [
-                'wiskunde' => [
-                    'conclusions' => [
-                        'domains' => [
-                            'breuken' => [
-                                'clusteredLearningGoals' => [
-                                    'cluster15' => [
-                                        'conclusion' => 'ik concludeer dit',
-                                        'desciption' => 'beschrijving',
+            'colors' => [
+                'red' => [
+                    'mars' => [
+                        'species' => [
+                            'vertebrae' => [
+                                'intelligent' => [
+                                    '1850-1899' => [
+                                        'discovered' => 'on a sunday',
+                                        'description' => 'quite likeable',
                                     ],
                                 ],
                             ],
-                            'getallen' => [
-                                'clusteredLearningGoals' => [
-                                    'cluster15' => [
-                                        'conclusion' => 'nikske',
-                                        'desciption' => 'beschrijving',
+                            'fishlike' => [
+                                'intelligent' => [
+                                    '1850-1899' => [
+                                        'discovered' => 'by accident',
+                                        'description' => 'a bit smelly',
                                     ],
                                 ],
                             ],
                         ],
                     ],
                 ],
-                'nederlands' => [
-                    'conclusions' => [
-                        'domains' => [
-                            'lezen' => 'boeken',
+                'blue' => [
+                    'pluto' => [
+                        'species' => [
+                            'insects' => 'gasfly',
                         ],
                     ],
                 ],
             ],
         ];
-        $this->assertEquals($expected, $this->report->toArray());
+        $this->assertEquals($expected, $this->tree->toArray());
     }
 
 
