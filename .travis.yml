@@ -10,4 +10,4 @@ before_script:
     - composer install
 
 script:
-    - bin/phpunit
+    -  bin/phpunit --bootstrap vendor/autoload.php tests/
