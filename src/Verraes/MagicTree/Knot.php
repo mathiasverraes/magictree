@@ -10,6 +10,11 @@ final class Knot implements ArrayAccess, Iterator, JsonSerializable, Node
 {
     protected $_children = [];
 
+    public function remove($key)
+    {
+        unset($this->_children[$key]);
+    }
+
     public function offsetGet($index)
     {
         if (!isset($this->_children[$index])) {

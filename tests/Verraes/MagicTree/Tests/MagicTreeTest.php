@@ -69,6 +69,24 @@ TREE;
     /**
      * @test
      */
+    public function it_should_remove_keys()
+    {
+        $this->tree->colors->remove('red');
+
+        $expected = <<<TREE
+- colors
+  |- blue
+  |  |- pluto
+  |  |  |- species
+  |  |  |  |- insects: "gasfly"
+
+TREE;
+        $this->assertEquals($expected, $this->tree->toAscii());
+    }
+
+    /**
+     * @test
+     */
     public function it_should_serialize_to_json()
     {
         $expected = <<<JSON
