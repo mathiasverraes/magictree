@@ -72,6 +72,8 @@ TREE;
         $this->assertEquals($expected, $this->tree->toAscii());
     }
 
+
+
     /**
      * @test
      */
@@ -177,6 +179,28 @@ JSON;
         $this->assertEquals($expected, $this->tree->toArray());
     }
 
+    /**
+     * @test
+     */
+    public function it_should_be_sortable()
+    {
 
+        $tree = new Knot();
+
+        $tree->things['b'] = 'second';
+        $tree->things['c'] = 'third';
+        $tree->things['a'] = 'first';
+
+        $tree->things->sort('strcasecmp');
+
+        $expected = <<<TREE
+- things
+  |- a: "first"
+  |- b: "second"
+  |- c: "third"
+
+TREE;
+        $this->assertEquals($expected, $tree->toAscii());
+    }
 }
  
