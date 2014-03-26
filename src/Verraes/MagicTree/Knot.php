@@ -137,12 +137,16 @@ final class Knot implements ArrayAccess, Iterator, JsonSerializable, Node
         $output = '';
 
         foreach ($this->_children as $key => $child) {
-            $output .=
-                str_repeat('  |', $indent) . '- ' . $key
-                . (is_object($child)
-                    ? "\n" . $child->toAscii($indent + 1)
-                    : ': "' . $child . '"' . PHP_EOL
-                );
+
+            if($child instanceof Node) {
+                $value = "\n" . $child->toAscii($indent + 1);
+            } elseif(is_bool($child)) {
+                $value = ': ' . ($child ? 'true':'false') . PHP_EOL;
+            } else {
+                $value = ': "' . $child . '"' . PHP_EOL;
+            }
+
+            $output .= str_repeat('  |', $indent) . '- ' . $key . $value;
         }
 
         return $output;

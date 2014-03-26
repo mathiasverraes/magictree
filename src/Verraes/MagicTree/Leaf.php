@@ -6,7 +6,7 @@ final class Leaf implements Node
 {
     private $_value = '';
 
-    public function __construct($_value = '')
+    public function __construct($_value)
     {
         $this->_value = $_value;
     }
@@ -23,7 +23,11 @@ final class Leaf implements Node
 
     public function toAscii($indent = 0)
     {
-        return ': "' . $this->_value . '"';
+       if(is_bool($this->_value)) {
+            return ': ' . ($this->_value ? 'true':'false');
+       } else {
+            return ': "' . $this->_value . '"';
+        }
     }
 
     public function jsonSerialize()

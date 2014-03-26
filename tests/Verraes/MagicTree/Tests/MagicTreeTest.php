@@ -21,13 +21,17 @@ final class MagicTreeTest extends PHPUnit_Framework_TestCase
                 ->mars->species['vertebrae']
                     ->intelligent['1850-1899']
                         ->discovered('on a sunday')
-                        ->description('quite likeable');
+                        ->description('quite likeable')
+                        ->isNice(true)
+        ;
         $this->tree
             ->colors['red']
                 ->mars->species['fishlike']
                     ->intelligent['1850-1899']
                         ->discovered('by accident')
-                        ->description('a bit smelly');
+                        ->description('a bit smelly')
+                        ->isNice(false)
+        ;
         $this->tree
             ->colors['blue']
                 ->pluto->species['insects'] = 'gasfly';
@@ -52,11 +56,13 @@ final class MagicTreeTest extends PHPUnit_Framework_TestCase
   |  |  |  |  |  |- 1850-1899
   |  |  |  |  |  |  |- discovered: "on a sunday"
   |  |  |  |  |  |  |- description: "quite likeable"
+  |  |  |  |  |  |  |- isNice: true
   |  |  |  |- fishlike
   |  |  |  |  |- intelligent
   |  |  |  |  |  |- 1850-1899
   |  |  |  |  |  |  |- discovered: "by accident"
   |  |  |  |  |  |  |- description: "a bit smelly"
+  |  |  |  |  |  |  |- isNice: false
   |- blue
   |  |- pluto
   |  |  |- species
@@ -98,7 +104,8 @@ TREE;
                     "intelligent": {
                         "1850-1899": {
                             "discovered": "on a sunday",
-                            "description": "quite likeable"
+                            "description": "quite likeable",
+                             "isNice": true
                         }
                     }
                 },
@@ -106,7 +113,8 @@ TREE;
                     "intelligent": {
                         "1850-1899": {
                             "discovered": "by accident",
-                            "description": "a bit smelly"
+                            "description": "a bit smelly",
+                             "isNice": false
                         }
                     }
                 }
@@ -141,6 +149,7 @@ JSON;
                                     '1850-1899' => [
                                         'discovered' => 'on a sunday',
                                         'description' => 'quite likeable',
+                                        'isNice' => true,
                                     ],
                                 ],
                             ],
@@ -149,6 +158,7 @@ JSON;
                                     '1850-1899' => [
                                         'discovered' => 'by accident',
                                         'description' => 'a bit smelly',
+                                        'isNice' => false,
                                     ],
                                 ],
                             ],
