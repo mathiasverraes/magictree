@@ -44,7 +44,7 @@ final class Knot implements ArrayAccess, Iterator, JsonSerializable, Node
             $this->_children[$name] = new Leaf($value);
 
         } else {
-            $this->_children[$name] = new HashKnot($value);
+            $this->_children[$name] = new Knot($value);
         }
     }
 
