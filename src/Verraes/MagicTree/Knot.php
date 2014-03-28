@@ -10,6 +10,25 @@ final class Knot implements ArrayAccess, Iterator, JsonSerializable, Node
 {
     protected $_children = [];
 
+    /**
+     * @param string $keys
+     * @param string $key...
+     */
+    public function has()
+    {
+        $keys = func_get_args();
+        $first = array_shift($keys);
+        $hasFirstKey = array_key_exists($first, $this->_children);
+
+        if(!$hasFirstKey) {
+            return false;
+        };
+        if($hasFirstKey && 0==count($keys)) {
+            return true;
+        }
+        return call_user_func_array([$this->_children[$first], 'has'], $keys);
+    }
+
     public function remove($key)
     {
         unset($this->_children[$key]);

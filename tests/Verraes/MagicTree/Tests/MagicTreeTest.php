@@ -18,23 +18,23 @@ final class MagicTreeTest extends PHPUnit_Framework_TestCase
 
         $this->tree
             ->colors['red']
-                ->mars->species['vertebrae']
-                    ->intelligent['1850-1899']
-                        ->discovered('on a sunday')
-                        ->description('quite likeable')
-                        ->isNice(true)
+            ->mars->species['vertebrae']
+            ->intelligent['1850-1899']
+            ->discovered('on a sunday')
+            ->description('quite likeable')
+            ->isNice(true)
         ;
         $this->tree
             ->colors['red']
-                ->mars->species['fishlike']
-                    ->intelligent['1850-1899']
-                        ->discovered('by accident')
-                        ->description('a bit smelly')
-                        ->isNice(false)
+            ->mars->species['fishlike']
+            ->intelligent['1850-1899']
+            ->discovered('by accident')
+            ->description('a bit smelly')
+            ->isNice(false)
         ;
         $this->tree
             ->colors['blue']
-                ->pluto->species['insects'] = 'gasfly';
+            ->pluto->species['insects'] = 'gasfly';
 
 
 
@@ -201,6 +201,23 @@ JSON;
 
 TREE;
         $this->assertEquals($expected, $tree->toAscii());
+    }
+
+    /**
+     * @test
+     */
+    public function it_should_check_if_keys_exist()
+    {
+        $tree= new Knot;
+        $tree->alfa->beta['gamma'] = 'foo';
+
+        $this->assertTrue($tree->has('alfa'));
+        $this->assertTrue($tree->has('alfa', 'beta'));
+        $this->assertTrue($tree->has('alfa', 'beta', 'gamma'));
+
+        $this->assertFalse($tree->has('delta'));
+        $this->assertFalse($tree->has('delta', 'epsilon'));
+        $this->assertFalse($tree->has('alfa', 'beta', 'epsilon'));
     }
 }
  
