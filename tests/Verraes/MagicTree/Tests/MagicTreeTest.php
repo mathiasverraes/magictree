@@ -4,6 +4,7 @@ namespace Verraes\MagicTree\Tests;
 
 use PHPUnit_Framework_TestCase;
 use Verraes\MagicTree\Knot;
+use Verraes\MagicTree\Node;
 
 final class MagicTreeTest extends PHPUnit_Framework_TestCase
 {
@@ -90,6 +91,38 @@ TREE;
 
 TREE;
         $this->assertEquals($expected, $this->tree->toAscii());
+    }
+    /**
+     * @test
+     */
+    public function it_should_filter_with_a_decider()
+    {
+        $this->tree->filter(function(Node $node) {
+                $result = $node->has('isNice') && $node->isNice == true;
+                return $result;
+            });
+
+        $expected = <<<TREE
+- colors
+  |- red
+  |  |- mars
+  |  |  |- species
+  |  |  |  |- vertebrae
+  |  |  |  |  |- intelligent
+  |  |  |  |- fishlike
+  |  |  |  |  |- intelligent
+  |  |  |  |  |  |- 1850-1899
+  |  |  |  |  |  |  |- discovered: "by accident"
+  |  |  |  |  |  |  |- description: "a bit smelly"
+  |  |  |  |  |  |  |- isNice: false
+  |- blue
+  |  |- pluto
+  |  |  |- species
+  |  |  |  |- insects: "gasfly"
+
+TREE;
+        $actual = $this->tree->toAscii();
+        $this->assertEquals($expected, $actual);
     }
 
     /**
