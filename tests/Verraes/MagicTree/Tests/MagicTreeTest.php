@@ -252,5 +252,18 @@ TREE;
         $this->assertFalse($tree->has('delta', 'epsilon'));
         $this->assertFalse($tree->has('alfa', 'beta', 'epsilon'));
     }
+
+    /**
+     * @test
+     */
+    public function it_should_return_the_count_of_Knots_children()
+    {
+        $tree = new Knot();
+        $tree->things['b'] = 'second';
+        $tree->things['c'] = 'third';
+        $tree->things['a'] = 'first';
+        $this->assertCount(1, $tree);
+        $this->assertCount(3, $tree->things);
+    }
 }
  

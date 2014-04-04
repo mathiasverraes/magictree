@@ -3,10 +3,11 @@
 namespace Verraes\MagicTree;
 
 use ArrayAccess;
+use Countable;
 use Iterator;
 use JsonSerializable;
 
-final class Knot implements ArrayAccess, Iterator, JsonSerializable, Node
+final class Knot implements ArrayAccess, Iterator, JsonSerializable, Node, Countable
 {
     protected $_children = [];
 
@@ -204,5 +205,13 @@ final class Knot implements ArrayAccess, Iterator, JsonSerializable, Node
                 $child->filter($decider);
             }
         }
+    }
+
+    /**
+     * @return int
+     */
+    public function count()
+    {
+        return count($this->_children);
     }
 }
