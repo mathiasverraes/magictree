@@ -3,19 +3,19 @@
 namespace Verraes\MagicTree\Tests;
 
 use PHPUnit_Framework_TestCase;
-use Verraes\MagicTree\Knot;
+use Verraes\MagicTree\Branch;
 use Verraes\MagicTree\Node;
 
 final class MagicTreeTest extends PHPUnit_Framework_TestCase
 {
     /**
-     * @var Knot
+     * @var Branch
      */
     private $tree;
 
     protected function setUp()
     {
-        $this->tree = new Knot();
+        $this->tree = new Branch();
 
         $this->tree
             ->colors['red']
@@ -218,7 +218,7 @@ JSON;
     public function it_should_be_sortable_by_key()
     {
 
-        $tree = new Knot();
+        $tree = new Branch();
 
         $tree->things['b'] = 'second';
         $tree->things['c'] = 'third';
@@ -241,7 +241,7 @@ TREE;
      */
     public function it_should_be_sortable_by_value()
     {
-        $tree = new Knot();
+        $tree = new Branch();
 
         $tree->things['id1']->myvalue('beta');
         $tree->things['id2']->myvalue('alfa');
@@ -268,7 +268,7 @@ TREE;
      */
     public function it_should_check_if_keys_exist()
     {
-        $tree= new Knot;
+        $tree= new Branch;
         $tree->alfa->beta['gamma'] = 'foo';
 
         $this->assertTrue($tree->has('alfa'));
@@ -283,9 +283,9 @@ TREE;
     /**
      * @test
      */
-    public function it_should_return_the_count_of_Knots_children()
+    public function it_should_return_the_count_of_branches_children()
     {
-        $tree = new Knot();
+        $tree = new Branch();
         $tree->things['b'] = 'second';
         $tree->things['c'] = 'third';
         $tree->things['a'] = 'first';
