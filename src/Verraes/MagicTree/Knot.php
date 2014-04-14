@@ -190,6 +190,11 @@ final class Knot implements ArrayAccess, Iterator, JsonSerializable, Node, Count
         uksort($this->_children, $comparator);
     }
 
+    public function sort(callable $comparator)
+    {
+        uasort($this->_children, $comparator);
+    }
+
     public function filter(callable $decider)
     {
         foreach ($this->_children as $key => $child) {

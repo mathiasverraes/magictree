@@ -215,7 +215,7 @@ JSON;
     /**
      * @test
      */
-    public function it_should_be_sortable()
+    public function it_should_be_sortable_by_key()
     {
 
         $tree = new Knot();
@@ -231,6 +231,33 @@ JSON;
   |- a: "first"
   |- b: "second"
   |- c: "third"
+
+TREE;
+        $this->assertEquals($expected, $tree->toAscii());
+    }
+
+    /**
+     * @test
+     */
+    public function it_should_be_sortable_by_value()
+    {
+        $tree = new Knot();
+
+        $tree->things['id1']->myvalue('beta');
+        $tree->things['id2']->myvalue('alfa');
+        $tree->things['id3']->myvalue('gamma');
+
+        $comparator = function ($left, $right) { return strcmp($left->myvalue, $right->myvalue); };
+        $tree->things->sort($comparator);
+
+        $expected = <<<TREE
+- things
+  |- id2
+  |  |- myvalue: "alfa"
+  |- id1
+  |  |- myvalue: "beta"
+  |- id3
+  |  |- myvalue: "gamma"
 
 TREE;
         $this->assertEquals($expected, $tree->toAscii());
