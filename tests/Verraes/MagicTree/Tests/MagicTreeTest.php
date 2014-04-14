@@ -224,7 +224,7 @@ JSON;
         $tree->things['c'] = 'third';
         $tree->things['a'] = 'first';
 
-        $tree->things->sort('strcasecmp');
+        $tree->things->ksort('strcasecmp');
 
         $expected = <<<TREE
 - things
