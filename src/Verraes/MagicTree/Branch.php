@@ -13,7 +13,8 @@ final class Branch implements ArrayAccess, Iterator, JsonSerializable, Node, Cou
 
     /**
      * @param string $keys
-     * @param string $key...
+     * @param string $key ...
+     * @return bool
      */
     public function has()
     {
