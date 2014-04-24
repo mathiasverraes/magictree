@@ -265,5 +265,44 @@ TREE;
         $this->assertCount(1, $tree);
         $this->assertCount(3, $tree->things);
     }
+
+    /**
+     * @test
+     */
+    public function it_should_execute_a_method_Where_a_key_is_found()
+    {
+        $this->tree->where('1850-1899', function(Knot $knot) {
+                $discovered = $knot->discovered;
+                $knot->discoverdMutated($discovered . '!');
+            });
+
+        $expected = <<<TREE
+- colors
+  |- red
+  |  |- mars
+  |  |  |- species
+  |  |  |  |- vertebrae
+  |  |  |  |  |- intelligent
+  |  |  |  |  |  |- 1850-1899
+  |  |  |  |  |  |  |- discovered: "on a sunday"
+  |  |  |  |  |  |  |- description: "quite likeable"
+  |  |  |  |  |  |  |- isNice: true
+  |  |  |  |  |  |  |- discoverdMutated: "on a sunday!"
+  |  |  |  |- fishlike
+  |  |  |  |  |- intelligent
+  |  |  |  |  |  |- 1850-1899
+  |  |  |  |  |  |  |- discovered: "by accident"
+  |  |  |  |  |  |  |- description: "a bit smelly"
+  |  |  |  |  |  |  |- isNice: false
+  |  |  |  |  |  |  |- discoverdMutated: "by accident!"
+  |- blue
+  |  |- pluto
+  |  |  |- species
+  |  |  |  |- insects: "gasfly"
+
+TREE;
+        $this->assertEquals($expected, $this->tree->toAscii());
+    }
 }
+
  
