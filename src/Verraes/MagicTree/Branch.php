@@ -229,7 +229,7 @@ final class Branch implements ArrayAccess, Iterator, JsonSerializable, Node, Cou
                 $callback($child);
             }
 
-            if ($child instanceof Knot)  {
+            if ($child instanceof Branch)  {
                 $child->where($keyToMatch, $callback);
             }
 

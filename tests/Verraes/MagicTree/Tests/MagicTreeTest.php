@@ -298,9 +298,9 @@ TREE;
      */
     public function it_should_execute_a_method_Where_a_key_is_found()
     {
-        $this->tree->where('1850-1899', function(Knot $knot) {
-                $discovered = $knot->discovered;
-                $knot->discoverdMutated($discovered . '!');
+        $this->tree->where('1850-1899', function(Branch $branch) {
+                $discovered = $branch->discovered;
+                $branch->discoverdMutated($discovered . '!');
             });
 
         $expected = <<<TREE
