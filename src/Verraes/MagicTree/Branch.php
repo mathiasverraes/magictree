@@ -220,4 +220,20 @@ final class Branch implements ArrayAccess, Iterator, JsonSerializable, Node, Cou
     {
         return count($this->_children);
     }
+
+    public function where($keyToMatch, callable $callback)
+    {
+        foreach ($this->_children as $key => $child) {
+
+            if ($key == $keyToMatch) {
+                $callback($child);
+            }
+
+            if ($child instanceof Branch)  {
+                $child->where($keyToMatch, $callback);
+            }
+
+        }
+
+    }
 }
