@@ -7,13 +7,14 @@ use Countable;
 use Iterator;
 use JsonSerializable;
 
-final class Knot implements ArrayAccess, Iterator, JsonSerializable, Node, Countable
+final class Branch implements ArrayAccess, Iterator, JsonSerializable, Node, Countable
 {
     protected $_children = [];
 
     /**
      * @param string $keys
-     * @param string $key...
+     * @param string $key ...
+     * @return bool
      */
     public function has()
     {
@@ -38,7 +39,7 @@ final class Knot implements ArrayAccess, Iterator, JsonSerializable, Node, Count
     public function offsetGet($index)
     {
         if (!isset($this->_children[$index])) {
-            $this->_children[$index] = new Knot();
+            $this->_children[$index] = new Branch();
         }
         return $this->_children[$index];
     }
@@ -47,7 +48,7 @@ final class Knot implements ArrayAccess, Iterator, JsonSerializable, Node, Count
     public function __get($name)
     {
         if (!isset($this->_children[$name])) {
-            $this->_children[$name] = new Knot();
+            $this->_children[$name] = new Branch();
         }
 
         return $this->_children[$name];
@@ -64,7 +65,7 @@ final class Knot implements ArrayAccess, Iterator, JsonSerializable, Node, Count
             $this->_children[$name] = new Leaf($value);
 
         } else {
-            $this->_children[$name] = new Knot($value);
+            $this->_children[$name] = new Branch($value);
         }
     }
 
@@ -185,9 +186,14 @@ final class Knot implements ArrayAccess, Iterator, JsonSerializable, Node, Count
         );
     }
 
-    public function sort(callable $comparator)
+    public function ksort(callable $comparator)
     {
         uksort($this->_children, $comparator);
+    }
+
+    public function sort(callable $comparator)
+    {
+        uasort($this->_children, $comparator);
     }
 
     public function filter(callable $decider)
