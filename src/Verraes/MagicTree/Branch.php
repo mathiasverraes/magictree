@@ -39,7 +39,7 @@ final class Branch implements ArrayAccess, Iterator, JsonSerializable, Node, Cou
     public function offsetGet($index)
     {
         if (!isset($this->_children[$index])) {
-            $this->_children[$index] = new Branch();
+            $this->addElement($index, new Branch());
         }
         return $this->_children[$index];
     }
@@ -48,7 +48,7 @@ final class Branch implements ArrayAccess, Iterator, JsonSerializable, Node, Cou
     public function __get($name)
     {
         if (!isset($this->_children[$name])) {
-            $this->_children[$name] = new Branch();
+            $this->addElement($name, new Branch());
         }
 
         $child = $this->_children[$name];
@@ -67,6 +67,11 @@ final class Branch implements ArrayAccess, Iterator, JsonSerializable, Node, Cou
 
     public function __set($name, $value)
     {
+        $this->addElement($name, $value);
+    }
+
+    private function addElement($name, $value)
+    {
         if (is_scalar($value)) {
             $this->_children[$name] = new Leaf($value);
 
@@ -77,7 +82,7 @@ final class Branch implements ArrayAccess, Iterator, JsonSerializable, Node, Cou
 
     public function __call($name, $arguments)
     {
-        $this->$name = $arguments[0];
+        $this->addElement($name, $arguments[0]);
         return $this;
     }
 
