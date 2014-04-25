@@ -248,18 +248,11 @@ final class Branch implements ArrayAccess, Iterator, JsonSerializable, Node, Cou
      */
     public function isEmpty()
     {
-        if ($this->count() == 0) {
-            return true;
-        } else {
-            foreach ($this->_children as $key => $child) {
-
-
-                if (!$child->isEmpty()) {
-                    return false;
-                }
+        foreach ($this->_children as $key => $child) {
+            if (!$child->isEmpty()) {
+                return false;
             }
         }
-
         return true;
     }
 }
