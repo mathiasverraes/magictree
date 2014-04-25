@@ -34,4 +34,29 @@ final class Leaf implements Node
     {
         return $this->_value;
     }
+
+    /**
+     * @return bool
+     */
+    public function isEmpty()
+    {
+        return false;
+    }
+
+    /**
+     * @return bool
+     */
+    public function has()
+    {
+        return false;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getValue()
+    {
+        return $this->_value;
+    }
+
 }
