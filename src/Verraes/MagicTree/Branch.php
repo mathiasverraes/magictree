@@ -51,7 +51,13 @@ final class Branch implements ArrayAccess, Iterator, JsonSerializable, Node, Cou
             $this->_children[$name] = new Branch();
         }
 
-        return $this->_children[$name];
+        $child = $this->_children[$name];
+
+        if ($child instanceof Leaf) {
+            return $child->getValue();
+        }
+
+        return $child;
     }
 
     public function offsetExists($offset)
@@ -71,14 +77,14 @@ final class Branch implements ArrayAccess, Iterator, JsonSerializable, Node, Cou
 
     public function __call($name, $arguments)
     {
-        $this->_children[$name] = $arguments[0];
+        $this->$name = $arguments[0];
         return $this;
     }
 
 
     public function offsetSet($offset, $value)
     {
-        $this->_children[$offset] = $value;
+        $this->$offset = $value;
     }
 
     public function offsetUnset($offset)
@@ -159,12 +165,10 @@ final class Branch implements ArrayAccess, Iterator, JsonSerializable, Node, Cou
 
         foreach ($this->_children as $key => $child) {
 
-            if($child instanceof Node) {
+            if($child instanceof Branch) {
                 $value = "\n" . $child->toAscii($indent + 1);
-            } elseif(is_bool($child)) {
-                $value = ': ' . ($child ? 'true':'false') . PHP_EOL;
-            } else {
-                $value = ': "' . $child . '"' . PHP_EOL;
+            } elseif($child instanceof Leaf) {
+                $value = $child->toAscii($indent + 1) . PHP_EOL;
             }
 
             $output .= str_repeat('  |', $indent) . '- ' . $key . $value;
@@ -200,15 +204,12 @@ final class Branch implements ArrayAccess, Iterator, JsonSerializable, Node, Cou
     {
         foreach ($this->_children as $key => $child) {
 
-            if (! $child instanceof Node)  {
-                continue;
-            }
-
-
             if ($decider($child)) {
                 $this->remove($key);
             } else {
-                $child->filter($decider);
+                if ($child instanceof Branch) {
+                    $child->filter($decider);
+                }
             }
         }
     }
@@ -235,5 +236,25 @@ final class Branch implements ArrayAccess, Iterator, JsonSerializable, Node, Cou
 
         }
 
+    }
+
+    /**
+     * @return bool
+     */
+    public function isEmpty()
+    {
+        if ($this->count() == 0) {
+            return true;
+        } else {
+            foreach ($this->_children as $key => $child) {
+
+
+                if (!$child->isEmpty()) {
+                    return false;
+                }
+            }
+        }
+
+        return true;
     }
 }

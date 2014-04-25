@@ -11,4 +11,15 @@ interface Node extends JsonSerializable
     public function toAscii($indent = 0);
 
     public function jsonSerialize();
+
+    /**
+     * @return bool
+     */
+    public function isEmpty();
+
+    /**
+     * @return bool
+     */
+    public function has();
+
 }

@@ -4,6 +4,7 @@ namespace Verraes\MagicTree\Tests;
 
 use PHPUnit_Framework_TestCase;
 use Verraes\MagicTree\Branch;
+use Verraes\MagicTree\Leaf;
 use Verraes\MagicTree\Node;
 
 final class MagicTreeTest extends PHPUnit_Framework_TestCase
@@ -329,6 +330,25 @@ TREE;
 
 TREE;
         $this->assertEquals($expected, $this->tree->toAscii());
+    }
+
+    /**
+     * @test
+     */
+    public function it_should_confirm_or_deny_being_empty()
+    {
+        $emptyBranch = new Branch();
+        $leaf = new Leaf(2);
+
+        $this->assertTrue($emptyBranch->isEmpty());
+        $this->assertFalse($leaf->isEmpty());
+
+        $nonEmptyBranch = new Branch();
+        $nonEmptyBranch
+            ->branchA
+                ->something(5);
+
+        $this->assertFalse($nonEmptyBranch->isEmpty());
     }
 }
 
