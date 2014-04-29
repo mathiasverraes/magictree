@@ -350,6 +350,24 @@ TREE;
 
         $this->assertFalse($nonEmptyBranch->isEmpty());
     }
+
+    /**
+     * @test
+     */
+    public function getting_a_leaf_should_return_its_value()
+    {
+        $branch = new Branch();
+        $branch->integer(5);
+
+        $this->assertInternalType('integer', $branch->integer);
+        $this->assertInternalType('integer', $branch['integer']);
+
+        $branch->string("MagicTree Rules");
+
+        $this->assertInternalType('string', $branch->string);
+        $this->assertInternalType('string', $branch['string']);
+
+    }
 }
 
  
