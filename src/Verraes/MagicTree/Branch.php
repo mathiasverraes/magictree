@@ -38,26 +38,13 @@ final class Branch implements ArrayAccess, Iterator, JsonSerializable, Node, Cou
 
     public function offsetGet($index)
     {
-        if (!isset($this->_children[$index])) {
-            $this->addElement($index, new Branch());
-        }
-        return $this->_children[$index];
+        return $this->getChild($index);
     }
 
 
     public function __get($name)
     {
-        if (!isset($this->_children[$name])) {
-            $this->addElement($name, new Branch());
-        }
-
-        $child = $this->_children[$name];
-
-        if ($child instanceof Leaf) {
-            return $child->getValue();
-        }
-
-        return $child;
+        return $this->getChild($name);
     }
 
     public function offsetExists($offset)
@@ -254,5 +241,23 @@ final class Branch implements ArrayAccess, Iterator, JsonSerializable, Node, Cou
             }
         }
         return true;
+    }
+
+    /**
+     * @param $index
+     * @return mixed
+     */
+    private function getChild($index)
+    {
+        if (!isset($this->_children[$index])) {
+            $this->addElement($index, new Branch());
+        }
+        $child = $this->_children[$index];
+
+        if ($child instanceof Leaf) {
+            return $child->getValue();
+        }
+
+        return $child;
     }
 }
