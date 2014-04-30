@@ -368,6 +368,93 @@ TREE;
         $this->assertInternalType('string', $branch['string']);
 
     }
+
+    /**
+     * @test
+     */
+    public function it_should_move_an_existing_complete_branch_to_a_different_location()
+    {
+        $this->tree->move('colors.red.mars.species.fishlike', 'colors.blue.pluto.species.fishlike');
+
+        $moved = <<<TREE
+- colors
+  |- red
+  |  |- mars
+  |  |  |- species
+  |  |  |  |- vertebrae
+  |  |  |  |  |- intelligent
+  |  |  |  |  |  |- 1850-1899
+  |  |  |  |  |  |  |- discovered: "on a sunday"
+  |  |  |  |  |  |  |- description: "quite likeable"
+  |  |  |  |  |  |  |- isNice: true
+  |- blue
+  |  |- pluto
+  |  |  |- species
+  |  |  |  |- insects: "gasfly"
+  |  |  |  |- fishlike
+  |  |  |  |  |- intelligent
+  |  |  |  |  |  |- 1850-1899
+  |  |  |  |  |  |  |- discovered: "by accident"
+  |  |  |  |  |  |  |- description: "a bit smelly"
+  |  |  |  |  |  |  |- isNice: false
+
+TREE;
+
+        $this->assertEquals($moved, $this->tree->toAscii());
+    }
+
+    /**
+     * @test
+     */
+    public function it_should_do_nothing_when_moving_an_unexisting_branch()
+    {
+        $this->tree->move('some.unexisting.branch', 'some.random.branch');
+
+        $expected = <<<TREE
+- colors
+  |- red
+  |  |- mars
+  |  |  |- species
+  |  |  |  |- vertebrae
+  |  |  |  |  |- intelligent
+  |  |  |  |  |  |- 1850-1899
+  |  |  |  |  |  |  |- discovered: "on a sunday"
+  |  |  |  |  |  |  |- description: "quite likeable"
+  |  |  |  |  |  |  |- isNice: true
+  |  |  |  |- fishlike
+  |  |  |  |  |- intelligent
+  |  |  |  |  |  |- 1850-1899
+  |  |  |  |  |  |  |- discovered: "by accident"
+  |  |  |  |  |  |  |- description: "a bit smelly"
+  |  |  |  |  |  |  |- isNice: false
+  |- blue
+  |  |- pluto
+  |  |  |- species
+  |  |  |  |- insects: "gasfly"
+
+TREE;
+
+        $this->assertEquals($expected, $this->tree->toAscii());
+    }
+
+    /**
+     * @test
+     */
+    public function it_should_move_a_leaf_to_a_different_location()
+    {
+        $tree = new Branch();
+        $tree->colors['blue'] = true;
+
+        $tree->move('colors.blue', 'colors.red');
+
+        $moved = <<<TREE
+- colors
+  |- red: true
+
+TREE;
+
+        $this->assertEquals($moved, $tree->toAscii());
+    }
 }
 
  
