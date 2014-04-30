@@ -18,17 +18,8 @@ final class Branch implements ArrayAccess, Iterator, JsonSerializable, Node, Cou
      */
     public function has()
     {
-        $keys = func_get_args();
-        $first = array_shift($keys);
-        $hasFirstKey = array_key_exists($first, $this->_children);
-
-        if(!$hasFirstKey) {
-            return false;
-        };
-        if($hasFirstKey && 0==count($keys)) {
-            return true;
-        }
-        return call_user_func_array([$this->_children[$first], 'has'], $keys);
+        $keysParts = func_get_args();
+        return $this->hasHelper($keysParts);
     }
 
     public function remove($key)
@@ -59,9 +50,10 @@ final class Branch implements ArrayAccess, Iterator, JsonSerializable, Node, Cou
 
     private function addElement($name, $value)
     {
-        if (is_scalar($value)) {
+        if($value instanceof Node) {
+            $this->_children[$name] = $value;
+        } else if (is_scalar($value)) {
             $this->_children[$name] = new Leaf($value);
-
         } else {
             $this->_children[$name] = new Branch($value);
         }
@@ -259,5 +251,97 @@ final class Branch implements ArrayAccess, Iterator, JsonSerializable, Node, Cou
         }
 
         return $child;
+    }
+
+    /**
+     * @param $fromKey
+     * @param $toKey
+     */
+    public function move($fromKey, $toKey)
+    {
+        $fromKey = explode('.', $fromKey);
+        $toKey = explode('.', $toKey);
+
+        if(!$this->hasHelper($fromKey)) {
+            return;
+        }
+
+        $node = $this->getByKeyParts($fromKey);
+
+        $this->setByKeyParts($toKey, $node);
+        $this->removeByKeyParts($fromKey);
+    }
+
+    /**
+     * @param array $keyParts
+     * @return Node
+     */
+    private function getByKeyParts(array $keyParts)
+    {
+        $first = array_shift($keyParts);
+
+        $node = $this->getNode($first);
+
+        if(!count($keyParts)) {
+            return $node;
+        } elseif($node instanceof Leaf) {
+            return $node;
+        } else {
+            return $node->getByKeyParts($keyParts);
+        }
+    }
+
+    /**
+     * @param array $keyParts
+     * @param Node $node
+     * @return void
+     */
+    private function setByKeyParts(array $keyParts, Node $node)
+    {
+        $first = array_shift($keyParts);
+
+        if(!count($keyParts)) {
+            $this->addElement($first, $node);
+            return;
+        }
+
+        $this->$first->setByKeyParts($keyParts, $node);
+    }
+
+    /**
+     * @param array $keyParts
+     * @return void
+     */
+    private function removeByKeyParts(array $keyParts)
+    {
+        $first = array_shift($keyParts);
+
+        if(!count($keyParts)) {
+            $this->remove($first);
+            return;
+        }
+
+        $this->$first->removeByKeyParts($keyParts);
+    }
+
+    private function hasHelper(array $keyParts)
+    {
+        $first = array_shift($keyParts);
+        $hasFirstKey = array_key_exists($first, $this->_children);
+
+        if(!$hasFirstKey) {
+            return false;
+        };
+
+        if($hasFirstKey && 0==count($keyParts)) {
+            return true;
+        }
+        
+        return $this->_children[$first]->hasHelper($keyParts);
+    }
+
+    private function getNode($key)
+    {
+        return $this->_children[$key];
     }
 }
