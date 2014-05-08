@@ -253,22 +253,19 @@ final class Branch implements ArrayAccess, Iterator, JsonSerializable, Node, Cou
     }
 
     /**
-     * @param $fromKey
-     * @param $toKey
+     * @param $fromKeyParts
+     * @param $toKeyParts
      */
-    public function move($fromKey, $toKey)
+    public function move(array $fromKeyParts, array $toKeyParts)
     {
-        $fromKey = explode('.', $fromKey);
-        $toKey = explode('.', $toKey);
-
-        if(!$this->hasByKeyParts($fromKey)) {
+        if(!$this->hasByKeyParts($fromKeyParts)) {
             return;
         }
 
-        $node = $this->getByKeyParts($fromKey);
+        $node = $this->getByKeyParts($fromKeyParts);
 
-        $this->setByKeyParts($toKey, $node);
-        $this->removeByKeyParts($fromKey);
+        $this->setByKeyParts($toKeyParts, $node);
+        $this->removeByKeyParts($fromKeyParts);
     }
 
     /**

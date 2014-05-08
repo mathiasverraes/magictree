@@ -374,7 +374,10 @@ TREE;
      */
     public function it_should_move_an_existing_complete_branch_to_a_different_location()
     {
-        $this->tree->move('colors.red.mars.species.fishlike', 'colors.blue.pluto.species.fishlike');
+        $this->tree->move(
+            ['colors', 'red', 'mars', 'species', 'fishlike'],
+            ['colors', 'blue', 'pluto', 'species', 'fishlike']
+        );
 
         $moved = <<<TREE
 - colors
@@ -408,7 +411,10 @@ TREE;
      */
     public function it_should_do_nothing_when_moving_an_unexisting_branch()
     {
-        $this->tree->move('some.unexisting.branch', 'some.random.branch');
+        $this->tree->move(
+            ['some', 'unexisting', 'branch'],
+            ['some', 'random', 'branch']
+        );
 
         $expected = <<<TREE
 - colors
@@ -445,7 +451,10 @@ TREE;
         $tree = new Branch();
         $tree->colors['blue'] = true;
 
-        $tree->move('colors.blue', 'colors.red');
+        $tree->move(
+            ['colors', 'blue'],
+            ['colors', 'red']
+        );
 
         $moved = <<<TREE
 - colors
