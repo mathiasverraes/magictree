@@ -411,7 +411,10 @@ TREE;
      */
     public function it_should_do_nothing_when_moving_an_unexisting_branch()
     {
-        $this->tree->move('some.unexisting.branch', 'some.random.branch');
+        $this->tree->move(
+            explode('.', 'some.unexisting.branch'),
+            explode('.', 'some.random.branch')
+        );
 
         $expected = <<<TREE
 - colors
@@ -448,7 +451,10 @@ TREE;
         $tree = new Branch();
         $tree->colors['blue'] = true;
 
-        $tree->move('colors.blue', 'colors.red');
+        $tree->move(
+            explode('.', 'colors.blue'),
+            explode('.', 'colors.red')
+        );
 
         $moved = <<<TREE
 - colors
