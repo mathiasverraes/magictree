@@ -256,7 +256,7 @@ final class Branch implements ArrayAccess, Iterator, JsonSerializable, Node, Cou
      * @param $fromKeyParts
      * @param $toKeyParts
      */
-    public function move($fromKeyParts, $toKeyParts)
+    public function move(array $fromKeyParts, array $toKeyParts)
     {
         if(!$this->hasByKeyParts($fromKeyParts)) {
             return;
