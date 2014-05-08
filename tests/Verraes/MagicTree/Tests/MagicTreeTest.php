@@ -374,7 +374,10 @@ TREE;
      */
     public function it_should_move_an_existing_complete_branch_to_a_different_location()
     {
-        $this->tree->move('colors.red.mars.species.fishlike', 'colors.blue.pluto.species.fishlike');
+        $this->tree->move(
+            explode('.', 'colors.red.mars.species.fishlike'),
+            explode('.', 'colors.blue.pluto.species.fishlike')
+        );
 
         $moved = <<<TREE
 - colors
